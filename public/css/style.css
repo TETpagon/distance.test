@@ -1,3 +1,124 @@
-.errorInFieldForm {
-	border-color: red;
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
+* {
+  font-family: 'Open Sans', sans-serif;
+}
+body {
+	background-color: #111;
+	background-size:cover;
+	background-blend-mode: overlay;
+}
+
+.signupSection {
+    background: url(/public/images/sky.jpeg);
+    background-repeat: no-repeat;
+    display: flex;
+	width: 900px;
+	height: 450px;
+    margin: 200px auto;
+    justify-content: center;
+    color: white;
+    box-shadow: 3px 10px 20px 5px rgba(0, 0, 0, .5);
+}
+
+.info {
+    text-align: center;
+    background: rgba(20, 20, 20, .8);
+    font-size: 18px;
+    border-right: 5px solid rgba(30, 30, 30, .8);
+    width: 40%;
+	padding: auto 0px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.row {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+	flex-wrap: wrap;
+	margin: 10px 0px 0px
+}
+.row label{
+    padding-right: 5px;
+}
+
+.signupForm {
+	width: 60%;
+    padding: 30px 30px;
+    background: rgba(20, 40, 40, .8);
+    transition: .2s;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#formWithData {
+    text-align: center;
+	padding-right: 30px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: end;
+}
+
+#inputFIO {
+}
+
+#inputAddress {
+}
+
+.submitButton {
+    width: 190px;
+}
+.image {
+    height: 160px;
+	width: 160px;
+    border-radius: 50%;
+    padding: inherit;
+}
+
+.submitButton {
+	margin-top: 20px; 
+	margin-left: 70px;
+	padding: 6px;
+	background: rgba(255, 255, 255, 0.1);
+	border: 2px solid #fd8631;
+	color: white;
+	cursor: pointer;
+	align-self: center;
+}
+
+.messageError {
+	width: 228px;
+	color: #fd8631;
+	font-size: 14px;
+	padding: 10px;
+	margin-right: 8px;
+	margin-top: -10px;
+}
+.messageError:before {
+	background: url(/public/images/error.png);
+}
+
+#textResponce {
+	padding: 15px;
+	background-color: rgba(255, 255, 255, 0.9);
+	color: black;
+	width: 80%;
+	margin: auto;
+	border: 2px solid #fd8631;
+}
+
+.hidden {
+	display: none;
+}
+.inputData {
+	background: rgba(255, 255, 255, 0.78);
+	width: 228px;
+	border: 0px;
+	padding: 10px;
 }

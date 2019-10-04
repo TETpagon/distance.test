@@ -37,12 +37,12 @@ document.addEventListener('DOMContentLoaded', function () {
 					// Если на сервере не выявлено ошибок и определено расстояние до пункта выдачи посылок,
 					// то выводится название пункта выдачи и расстояние до него, иначе выводятся ошибки.
 					if (responseData['status'] === 0) {
-						message = responseData['data']['clientFio'] + " (" + responseData['data']['clientTel'] + ": ближайший пункт выдачи " 
+						message = responseData['data']['clientFio'] + " (" + responseData['data']['clientTel'] + "): ближайший пункт выдачи " 
 						+ responseData['data']['nearestDistribution']['name'] + " находится на расстоянии " 
 						+ responseData['data']['nearestDistribution']['distance'] + "км.";
 
 						textResponce.innerHTML = message;
-						textResponce.classList.remove("d-none");
+						textResponce.classList.remove("hidden");
 					} else {
 						responseData['data'].forEach(function(error, i, arr){
 							if (error['type'] === "errorTel") {
@@ -75,14 +75,14 @@ document.addEventListener('DOMContentLoaded', function () {
 			accessSend = false;
 		};
 
-		if (inputTel.value.match(/^\+?(\d+|\(|\)|\-)$/) === null) {
-			showError(messageInputTel,"Номер телефона введен не корректно!");
 
-			accessSend = false;
-		};
 
 		if (inputTel.value === "") {
 			showError(messageInputTel,"Поле не заполнено!");
+
+			accessSend = false;
+		} else if (inputTel.value.match(/^\+?(\d+|\(|\)|\-)$/) === null) {
+			showError(messageInputTel,"Номер телефона введен не корректно!");
 
 			accessSend = false;
 		};
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	* Вывод ошибки.
 	*/
 	function showError(element, message) {
-		element.classList.remove("d-none");
+		element.classList.remove("hidden");
 		element.innerHTML = message;
 	}
 
@@ -109,16 +109,19 @@ document.addEventListener('DOMContentLoaded', function () {
 	* Чистка формы.
 	*/
 	function refreshForm() {
-		messageInputFIO.classList.add("d-none");
+		textResponce.classList.add("hidden");
+		textResponce.innerHTML = "";
+		
+		messageInputFIO.classList.add("hidden");
 		messageInputFIO.innerHTML = "";
 
-		messageInputTel.classList.add("d-none");
+		messageInputTel.classList.add("hidden");
 		messageInputTel.innerHTML = "";
 
-		messageInputAddress.classList.add("d-none");
+		messageInputAddress.classList.add("hidden");
 		messageInputAddress.innerHTML = "";
 
-		textResponce.classList.add("d-none");
+		textResponce.classList.add("hidden");
 	}
 });	
 
