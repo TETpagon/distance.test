@@ -12,22 +12,22 @@ class Candidate extends CandidateAbstract
         $errors = [];
         $distributions = new Distributions();
         
-        // Извлекаем данные из запроса
+        // Извлечение данных из запроса
         $clientFio = htmlspecialchars($_POST['clientFio']);
         $clientTel = htmlspecialchars($_POST['clientTel']);
         $clientAddress = htmlspecialchars($_POST['clientAddress']);
 
-        // Форматируем номер телефона
+        // Форматирование номера телефона
         $clientTel = Toolkit::getFormattedPhone($clientTel);
         
-        // Если номер не соответсвует формату, то сообщаем об ошибке 
+        // Если номер не соответствует формату, то сообщаем об ошибке 
         if ($clientTel === null) {
             $errors[] = [
                 'type' => "errorTel", 
                 'text' => "Номер телефона должен состоять из 11 цифр.",
             ];
         }
-        // Определяем координаты по адресу
+        // Определение координат по адресу
         //$targetCoords = Toolkit::getCoords($clientAddress);
         $targetCoords = new Coords(59.971942,30.324294);
         
@@ -68,7 +68,7 @@ class Candidate extends CandidateAbstract
     /**
     * Вернет ближайший пункт
     * выдачи посылок и растояние 
-    * до него от искомой координаты.
+    * до пункта от искомой координаты.
     *
     * @param array $distributions Массив пунктов выдачи посылок.
     * @param Coords $targetCoords Искомая координата.
@@ -130,7 +130,7 @@ class Candidate extends CandidateAbstract
         //$d = cos($radCoords1Lat) * cos($radCoords2Lat) * cos($abcDiffLng);
         //$distance = $R * atan(sqrt($a + $b) / ($c + $d));
         
-        //$distance = round($distance, 1);
+        $distance = round($distance, 1);
         
         return $distance;
     }

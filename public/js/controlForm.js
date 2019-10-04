@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', function () {
 				if(request.readyState === 4 && request.status === 200) {
 					let responseData = JSON.parse(request.responseText);
 					let message = "";
+					
+					// Если на сервере не выявлено ошибок и определено расстояние до пункта выдачи посылок,
+					// то выводится название пункта выдачи и расстояние до него, иначе выводятся ошибки.
 					if (responseData['status'] === 0) {
 						message = responseData['data']['clientFio'] + " (" + responseData['data']['clientTel'] + ": ближайший пункт выдачи " 
 						+ responseData['data']['nearestDistribution']['name'] + " находится на расстоянии " 
@@ -95,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	/**
-	* Показывает ошибку.
+	* Вывод ошибки.
 	*/
 	function showError(element, message) {
 		element.classList.remove("d-none");
@@ -103,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	/**
-	* Чистит форму.
+	* Чистка формы.
 	*/
 	function refreshForm() {
 		messageInputFIO.classList.add("d-none");
