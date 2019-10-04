@@ -5,7 +5,7 @@
 		<title>Определение расстояния до ближайшего отделения выдачи посылок</title>
 		<link rel="stylesheet" href="/public/css/style.css" />
 		<link rel="stylesheet" href="/public/css/bootstrap.min.css" />
-		<script src="/public/js/validation.js"></script>
+		<script src="/public/js/controlForm.js"></script>
 	</head>
 	<body style="background-color: #B0E0E6;">
 		<div style="width: 400px; margin: 150px 700px;">
