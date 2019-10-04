@@ -2,6 +2,7 @@
 require_once 'CandidateAbstract.php';
 require_once 'Toolkit.php';
 require_once 'Coords.php';
+require_once 'Distributions.php';
 
 class Candidate extends CandidateAbstract 
 {
@@ -9,20 +10,28 @@ class Candidate extends CandidateAbstract
         $status = 0;
         $data = [];
         $errors = [];
+        $distributions = new Distributions();
         
+        // Извлекаем данные из запроса
         $clientFio = htmlspecialchars($_POST['clientFio']);
         $clientTel = htmlspecialchars($_POST['clientTel']);
         $clientAddress = htmlspecialchars($_POST['clientAddress']);
 
+        // Форматируем номер телефона
         $clientTel = Toolkit::getFormattedPhone($clientTel);
+        
+        // Если номер не соответсвует формату, то сообщаем об ошибке 
         if ($clientTel === null) {
             $errors[] = [
                 'type' => "errorTel", 
                 'text' => "Номер телефона должен состоять из 11 цифр.",
             ];
         }
-        $targetCoords = Toolkit::getCoords($clientAddress);
-
+        // Определяем координаты по адресу
+        //$targetCoords = Toolkit::getCoords($clientAddress);
+        $targetCoords = new Coords(59.971942,30.324294);
+        
+        // Если адрес не найден, то сообщаем об ошибке 
         if ($targetCoords === null) {
             $errors[] = [
                 'type' => "errorAddress", 
@@ -30,14 +39,16 @@ class Candidate extends CandidateAbstract
             ];
         }
 
+        // Если ошибок не выявлено, то отправляем данные, иначе отправляем ошибки 
         if (!$errors) { 
-            $distributions = $this->getDistributions();
-            $nearestDistribution = $this->determineNearestDistribution($distributions, $targetCoords);
+            $distributs = $distributions->getAll();
+            $nearestDistribution = $this->determineNearestDistribution($distributs, $targetCoords);
 
             $data = [
                 'clientFio' => $clientFio,
                 'clientTel' => $clientTel,
                 'nearestDistribution' => $nearestDistribution,
+                'targetCoords' => $targetCoords,
             ];
 
             $response = [
@@ -93,37 +104,35 @@ class Candidate extends CandidateAbstract
     * @return float
     */
     protected function calculateDistance(Coords $Coords1, Coords $Coords2): float {
+        // Радиус Земли
         $R = 6371;
-        $distance = 6371*acos(sin($Coords1->lng*pi()/180)*sin($Coords2->lng*pi()/180) + cos($Coords1->lng*pi()/180) * cos($Coords2->lng*pi()/180) * cos($Coords2->lat*pi()/180 - $Coords1->lat*pi()/180));
-        $distance = round($distance, 1);
+        
+        // Перевод в радианы
+        $radCoords1Lat = $Coords1->lat * pi() / 180;
+        $radCoords2Lat = $Coords2->lat * pi() / 180;
+        $radCoords1Lng = $Coords1->lng * pi() / 180;
+        $radCoords2Lng = $Coords2->lng * pi() / 180;
+        $abcDiffLat = abs($radCoords1Lat-$radCoords2Lat);
+        $abcDiffLng = abs($radCoords1Lng-$radCoords2Lng);
+
+        // Сферическая теорема косинусов 
+        $distance = $R * acos(sin($radCoords1Lat) * sin($radCoords2Lat) + cos($radCoords1Lat) * cos($radCoords2Lat) * cos($abcDiffLng));
+        
+        // Формула для определения более точных значений на маленьких расстояниях (до 1 км)
+        //$a = pow(sin($abcDiffLat / 2), 2);
+        //$b = cos($radCoords1Lat) * cos($radCoords2Lat) * pow(sin($abcDiffLng / 2), 2);
+        //$distance = $R * 2 * asin(sqrt($a + $b));
+
+        // Формула для определения более точных значений на больших расстояниях 
+        //$a = pow(cos($radCoords2Lat) * sin($abcDiffLng), 2);
+        //$b = pow(cos($radCoords1Lat) * sin($radCoords2Lat) - sin($radCoords1Lat) * cos($radCoords2Lat) * cos($abcDiffLng), 2);
+        //$c = sin($radCoords1Lat) * sin($radCoords2Lat);
+        //$d = cos($radCoords1Lat) * cos($radCoords2Lat) * cos($abcDiffLng);
+        //$distance = $R * atan(sqrt($a + $b) / ($c + $d));
+        
+        //$distance = round($distance, 1);
+        
         return $distance;
-    }
-    
-    /**
-    * Вернет из базы данных массив 
-    * пунтков выдачи посылок.
-    *
-    * @return array
-    */
-    protected function getDistributions(): array {
-        $host = '127.0.0.1';
-        $db   = 'delivery';
-        $user = 'phpmyadmin';
-        $pass = 'some_pass';
-        $charset = 'utf8';
-
-        $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-        $opt = [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        ];
-        $pdo = new PDO($dsn, $user, $pass, $opt);
-
-        $distributions = $pdo->query('SELECT name, latitude, longitude FROM distributions')->fetchAll(PDO::FETCH_ASSOC);
-        
-        
-        return $distributions;
     }
 }
     
