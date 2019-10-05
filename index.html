@@ -7,14 +7,18 @@
 		<script src="/public/js/controlForm.js"></script>
 	</head>
 	<body>
-		<div class="signupSection">
+		<div class="serviceSection">
 			<div class="info">
 				<h2>Доставка посылок</h2>
 				<img class="image" src="/public/images/delivery.png">
 				<p>Пункты выдачи</p>
  		 	</div>
-			<div class="signupForm">
-				<div id="textResponce" class="messegeInfo"></div>
+			<div class="serviceForm">
+				<div id="areaResponce">
+					<div id="textResponce" class="messegeInfo"></div>
+					<button type="button" class="buttonOrange" id="buttonBack">Назад</button>
+				</div>
+				
 				<form id="formWithData">
 					<div class="row">
 						<label for="inputFIO">ФИО:</label>
@@ -34,7 +38,7 @@
 					</div>
 						<div id='messageInputAddress' class="messageError"></div>
 
-					<button type="submit" class="submitButton" id="sendAjax">Найти пункт выдачи</button>
+					<button type="submit" class="buttonOrange" id="sendAjax">Найти пункт выдачи</button>
 				</form>
 			</div>
 		</div>

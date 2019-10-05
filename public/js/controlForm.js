@@ -1,13 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
 	let formWithData = document.getElementById('formWithData');
 	let inputFIO = document.getElementById('inputFIO');
-	let messageInputFIO = document.getElementById('messageInputFIO');
 	let inputTel = document.getElementById('inputTel');
-	let messageInputTel = document.getElementById('messageInputTel');
 	let inputAddress = document.getElementById('inputAddress');
+	let messageInputFIO = document.getElementById('messageInputFIO');
+	let messageInputTel = document.getElementById('messageInputTel');
 	let messageInputAddress = document.getElementById('messageInputAddress');
 	let textResponce = document.getElementById('textResponce');
-
+	let areaResponce = document.getElementById('areaResponce');
+	let buttonBack = document.getElementById('buttonBack');
+	
 	inputFIO.value = "Иванов Иван Иванович";
 	inputTel.value = "12345678910";
 	inputAddress.value = "Россия, Санкт-Петербург, ул. Профессора Попова, дом 5";
@@ -15,7 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	refreshForm();
 	
 	formWithData.addEventListener('submit', sandAjax);
-	
+	buttonBack.addEventListener('click', refreshForm);
+
 	function sandAjax(e){
 		e.preventDefault();
 		refreshForm();
@@ -42,7 +45,8 @@ document.addEventListener('DOMContentLoaded', function () {
 						+ responseData['data']['nearestDistribution']['distance'] + "км.";
 
 						textResponce.innerHTML = message;
-						textResponce.classList.remove("hidden");
+						areaResponce.classList.remove("hidden");
+						formWithData.classList.add("hidden");
 					} else {
 						responseData['data'].forEach(function(error, i, arr){
 							if (error['type'] === "errorTel") {
@@ -59,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 
 	}
-
+	
 	/**
 	* Проверяет введенные данные и сообщает об некоректностях.
 	* Возращает признак о валидности данных.
@@ -109,7 +113,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	* Чистка формы.
 	*/
 	function refreshForm() {
-		textResponce.classList.add("hidden");
+		formWithData.classList.remove("hidden");
+		
+		areaResponce.classList.add("hidden");
 		textResponce.innerHTML = "";
 		
 		messageInputFIO.classList.add("hidden");
@@ -120,8 +126,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		messageInputAddress.classList.add("hidden");
 		messageInputAddress.innerHTML = "";
-
-		textResponce.classList.add("hidden");
 	}
 });	
 
