@@ -2,7 +2,7 @@
 require_once 'CandidateAbstract.php';
 require_once 'Toolkit.php';
 require_once 'Coords.php';
-require_once 'Distributions.php';
+require_once 'custom/Distributions.php';
 
 class Candidate extends CandidateAbstract 
 {
