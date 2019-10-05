@@ -1,19 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
-	let formWithData = document.getElementById('formWithData');
-	let inputFIO = document.getElementById('inputFIO');
-	let inputTel = document.getElementById('inputTel');
-	let inputAddress = document.getElementById('inputAddress');
-	let messageInputFIO = document.getElementById('messageInputFIO');
-	let messageInputTel = document.getElementById('messageInputTel');
-	let messageInputAddress = document.getElementById('messageInputAddress');
-	let textResponce = document.getElementById('textResponce');
-	let areaResponce = document.getElementById('areaResponce');
-	let buttonBack = document.getElementById('buttonBack');
+	const formWithData = document.getElementById('formWithData');
+	const inputFIO = document.getElementById('inputFIO');
+	const inputTel = document.getElementById('inputTel');
+	const inputAddress = document.getElementById('inputAddress');
+	const messageInputFIO = document.getElementById('messageInputFIO');
+	const messageInputTel = document.getElementById('messageInputTel');
+	const messageInputAddress = document.getElementById('messageInputAddress');
+	const textResponce = document.getElementById('textResponce');
+	const areaResponce = document.getElementById('areaResponce');
+	const buttonBack = document.getElementById('buttonBack');
 	
-	inputFIO.value = "Иванов Иван Иванович";
-	inputTel.value = "12345678910";
-	inputAddress.value = "Россия, Санкт-Петербург, ул. Профессора Попова, дом 5";
-
 	refreshForm();
 	
 	formWithData.addEventListener('submit', sandAjax);
@@ -22,7 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	function sandAjax(e){
 		e.preventDefault();
 		refreshForm();
-
+		
+		// Если форма проходит валидацию, то оправляем запрос, иначе показываем ошибки
 		if (validateForm()) {
 			const request = new XMLHttpRequest();
 			const url = "/project/ajax.php";
@@ -55,6 +52,11 @@ document.addEventListener('DOMContentLoaded', function () {
 							if (error['type'] === "errorAddress") {
 								showError(messageInputAddress, error['text']);
 							}
+							if (error['type'] === "errorTimeout") {
+								textResponce.innerHTML = error['text'];
+								areaResponce.classList.remove("hidden");
+								formWithData.classList.add("hidden");
+							}
 						});
 					}
 				}
@@ -78,8 +80,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			accessSend = false;
 		};
-
-
 
 		if (inputTel.value === "") {
 			showError(messageInputTel,"Поле не заполнено!");

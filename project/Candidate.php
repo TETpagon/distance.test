@@ -28,16 +28,24 @@ class Candidate extends CandidateAbstract
             ];
         }
         // Определение координат по адресу
-        //$targetCoords = Toolkit::getCoords($clientAddress);
-        $targetCoords = new Coords(59.971942,30.324294);
-        
-        // Если адрес не найден, то сообщаем об ошибке 
-        if ($targetCoords === null) {
-            $errors[] = [
-                'type' => "errorAddress", 
-                'text' => "Адрес введен не верно.",
+		ob_start(NULL, 0, PHP_OUTPUT_HANDLER_CLEANABLE ^ PHP_OUTPUT_HANDLER_REMOVABLE) ;
+			$targetCoords = Toolkit::getCoords($clientAddress);
+		$warning = ob_get_clean();
+
+		// Проверка ответил ли сервис по определению координат по адресу
+		if ($warning) {
+			$errors[] = [
+                'type' => "errorTimeout", 
+                'text' => "Превышен лимит запросов. Обратитесь позднее.",
             ];
-        }
+		} else
+        	// Если адрес не найден, то сообщаем об ошибке 
+			if ($targetCoords === null) {
+				$errors[] = [
+					'type' => "errorAddress", 
+					'text' => "Адрес введен не верно.",
+				];
+			}
 
         // Если ошибок не выявлено, то отправляем данные, иначе отправляем ошибки 
         if (!$errors) { 
@@ -115,13 +123,13 @@ class Candidate extends CandidateAbstract
         $abcDiffLat = abs($radCoords1Lat-$radCoords2Lat);
         $abcDiffLng = abs($radCoords1Lng-$radCoords2Lng);
 
-        // Сферическая теорема косинусов 
-        $distance = $R * acos(sin($radCoords1Lat) * sin($radCoords2Lat) + cos($radCoords1Lat) * cos($radCoords2Lat) * cos($abcDiffLng));
+        // Формула для определения расстояния
+        //$distance = $R * acos(sin($radCoords1Lat) * sin($radCoords2Lat) + cos($radCoords1Lat) * cos($radCoords2Lat) * cos($abcDiffLng));
         
-        // Формула для определения более точных значений на маленьких расстояниях (до 1 км)
-        //$a = pow(sin($abcDiffLat / 2), 2);
-        //$b = cos($radCoords1Lat) * cos($radCoords2Lat) * pow(sin($abcDiffLng / 2), 2);
-        //$distance = $R * 2 * asin(sqrt($a + $b));
+        // Формула для определения более точных значений на маленьких расстояниях (примерно в пределах города)
+        $a = pow(sin($abcDiffLat / 2), 2);
+        $b = cos($radCoords1Lat) * cos($radCoords2Lat) * pow(sin($abcDiffLng / 2), 2);
+        $distance = $R * 2 * asin(sqrt($a + $b));
 
         // Формула для определения более точных значений на больших расстояниях 
         //$a = pow(cos($radCoords2Lat) * sin($abcDiffLng), 2);
