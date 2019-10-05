@@ -1,4 +1,5 @@
 <?php
+// Конфигурация базы данных
 $config['host'] = '127.0.0.1';
 $config['db']   = 'delivery';
 $config['user'] = 'phpmyadmin';

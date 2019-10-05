@@ -32,7 +32,7 @@ class Distributions
 	public function getAll(array $fields = []): array {
 		$fields = array_intersect($fields, $this->fields);
 		
-		// Проверка наличия полей в таблице
+		// Проверка наличия искомых полей в таблице
         if (!$fields){
 			$sql = "SELECT * FROM {$this->tableName}";
 		} else {
