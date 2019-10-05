@@ -56,7 +56,6 @@ class Candidate extends CandidateAbstract
                 'clientFio' => $clientFio,
                 'clientTel' => $clientTel,
                 'nearestDistribution' => $nearestDistribution,
-                'targetCoords' => $targetCoords,
             ];
 
             $response = [
