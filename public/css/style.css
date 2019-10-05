@@ -8,6 +8,17 @@ body {
 	background-blend-mode: overlay;
 }
 
+.hidden {
+	display: none !important;
+}
+
+.inputData {
+	background: rgba(255, 255, 255, 0.78);
+	width: 228px;
+	border: 0px;
+	padding: 10px;
+}
+
 .serviceSection {
     background: url(/public/images/sky.jpeg);
     background-repeat: no-repeat;
@@ -56,32 +67,6 @@ body {
 	align-items: center;
 }
 
-#buttonBack {
-	margin: 20px;
-}
-
-#areaResponce {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-
-#formWithData {
-    text-align: center;
-	padding-right: 30px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: end;
-}
-
-#inputFIO {
-}
-
-#inputAddress {
-}
-
 .image {
     height: 160px;
 	width: 160px;
@@ -109,8 +94,25 @@ body {
 	margin-right: 8px;
 	margin-top: -10px;
 }
-.messageError:before {
-	background: url(/public/images/error.png);
+
+#buttonBack {
+	margin: 20px;
+}
+
+#areaResponce {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#formWithData {
+    text-align: center;
+	padding-right: 30px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: end;
 }
 
 #textResponce {
@@ -120,14 +122,4 @@ body {
 	width: 80%;
 	margin: auto;
 	border: 2px solid #fd8631;
-}
-
-.hidden {
-	display: none !important;
-}
-.inputData {
-	background: rgba(255, 255, 255, 0.78);
-	width: 228px;
-	border: 0px;
-	padding: 10px;
 }
